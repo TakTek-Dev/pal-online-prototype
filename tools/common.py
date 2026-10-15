@@ -3,7 +3,7 @@ the block, the line and the drawn marks."""
 import html, json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = 7
+V = 8
 
 ED = json.load(open(os.path.join(ROOT, 'research', 'edition.json'), encoding='utf-8'))
 PH = {p['id']: p for p in json.load(open(os.path.join(ROOT, 'research', 'photos.json'), encoding='utf-8'))['photos']}
