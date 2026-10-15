@@ -230,5 +230,7 @@ html.is-loading{overflow:hidden}
   .links > li:nth-child(n){grid-column:span 2}
   .tell form{grid-template-columns:minmax(0,1fr);padding:16px}
   .bar .home{width:120px}
-  .today .rebar{right:12px;gap:11px;height:30px}
+  .today .rebar{right:6px;gap:10px;height:30px}
+  .today .rebar i:nth-child(n+4){display:none}
+  .today .mline .tag{max-width:calc(100% - 52px)}
 }
