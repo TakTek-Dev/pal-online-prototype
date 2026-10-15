@@ -1,0 +1,6 @@
+THESIS: Palestine reported by livelihood, built as a wall: every worker is a block with a name, a trade, a place and a rate; today's course is laid on top. Refuses the broadsheet grid of headline, photo and hairlines.
+OWN-WORLD: lime-mortar ground, cast-concrete blocks (three-core hollow block) in running bond, charcoal ink, one orange mason's line, oxide rebar, sprayed marks for state. Hepta Slab (block serif) over Mona Sans.
+STORY: the reader meets named people and what they are paid before any institution, sees whose count says what, and adds their own block.
+FIRST VIEWPORT: wordmark with the block hyphen; the line stretched across; the lead (photo opening, headline, rate) as a corner two blocks wide, three courses high; seven people bonded beside it.
+FORM: Midmak, candidate 4 of 7; seed 8b1ac050.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md

@@ -1,0 +1,155 @@
+/* Pal-Online — the Midmak system: tokens, type, the block, the wall, the line.
+   Shared by home.html and index.html (the identity guide). */
+
+@font-face{font-family:"Hepta Slab";src:url(../fonts/hepta-slab-700.woff2?v=1) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Hepta Slab";src:url(../fonts/hepta-slab-800.woff2?v=1) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"Mona Sans";src:url(../fonts/mona-sans.woff2?v=1) format("woff2");font-weight:400 900;font-stretch:75% 100%;font-display:swap}
+@font-face{font-family:"Mona Sans";src:url(../fonts/mona-sans-italic.woff2?v=1) format("woff2");font-weight:400 600;font-style:italic;font-display:swap}
+
+:root{
+  /* materials */
+  --mortar:#F3F4F1;      /* the page: lime mortar, cool, never cream */
+  --mortar-2:#E7E9E5;    /* sunk ground, form fields */
+  --block:#D9DBD6;       /* a block face, multiplied with the concrete tile */
+  --block-old:#CBCEC8;   /* older courses */
+  --ink:#141618;         /* charcoal: the one structural ink */
+  --ink-2:#464B4F;       /* secondary text, holds 5:1 on a block */
+  --line:#FF4F12;        /* the mason's line: the only live colour */
+  --oxide:#983812;       /* rebar oxide: text-safe shade of the line */
+  --night:#131517;
+  --night-block:#272B2E;
+  --night-ink:#ECEEEA;
+  --night-ink-2:#A8AEB2;
+  --selection:#FFD0BD;
+
+  --display:"Hepta Slab",Rockwell,Georgia,serif;
+  --text:"Mona Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  --joint:6px;                       /* a mortar joint */
+  --gut:clamp(16px,3.2vw,40px);
+  --max:1360px;
+  --course:clamp(150px,12.4vw,176px);/* course height: a block is roughly 2:1 */
+  --tex:url(../img/concrete.webp?v=1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-set:cubic-bezier(.2,.9,.25,1.25);  /* a block set down and tapped level */
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --mortar:#101213; --mortar-2:#1A1D1F;
+    --block:#2A2E31; --block-old:#232629;
+    --ink:#ECEEEA; --ink-2:#B1B7BA;
+    --oxide:#FF8A5C;
+    --night:#0A0B0C; --night-block:#1E2124;
+    --selection:#7A2A0C;
+    color-scheme:dark;
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:84px}
+body{margin:0;background:var(--mortar);color:var(--ink);font:400 17.5px/1.6 var(--text);font-optical-sizing:auto;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img,svg{display:block;max-width:100%}
+img{height:auto}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:.22em;text-decoration-color:color-mix(in srgb,currentColor 45%,transparent)}
+a:hover{text-decoration-color:var(--line)}
+button,input,textarea,select{font:inherit;color:inherit}
+::selection{background:var(--selection);color:var(--ink)}
+:focus-visible{outline:2px solid var(--line);outline-offset:3px}
+html{scrollbar-color:var(--ink-2) var(--mortar-2)}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:8px;z-index:100;display:inline-flex;align-items:center;min-height:44px;padding:0 16px;background:var(--ink);color:var(--mortar);font-weight:600}
+.skip:focus{left:12px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gut)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- type ---------- */
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;margin:0;letter-spacing:-.012em;text-wrap:balance}
+h1{font-size:clamp(32px,3.6vw,54px);line-height:1.04}
+h2{font-size:clamp(28px,2.7vw,40px);line-height:1.06}
+h3{font-size:21px;line-height:1.14;font-weight:700}
+p{margin:0}
+.dek{font-size:clamp(17px,1.35vw,19.5px);line-height:1.5;color:var(--ink-2)}
+.src{font:500 13px/1.45 var(--text);color:var(--ink-2)}
+.src a{color:inherit}
+.label{font:650 13px/1.2 var(--text);font-stretch:82%;letter-spacing:.04em;color:var(--ink-2)}
+.rate{font:900 46px/.9 var(--text);font-stretch:75%;letter-spacing:-.01em;font-variant-numeric:tabular-nums lining-nums}
+.rate small{display:block;font:550 13px/1.3 var(--text);font-stretch:85%;letter-spacing:0;color:var(--ink-2);margin-top:6px}
+q,blockquote{quotes:"\201C" "\201D"}
+
+/* ---------- the block ---------- */
+.blk{position:relative;min-width:0;background:var(--block) var(--tex);background-size:256px;background-blend-mode:multiply;color:var(--ink)}
+@media (prefers-color-scheme:dark){.blk{background-blend-mode:soft-light}}
+.blk--old{background-color:var(--block-old)}
+.blk--night{background-color:var(--night-block);color:var(--night-ink);background-blend-mode:soft-light}
+.blk--line{background-color:var(--line);color:#141618}
+.blk--gap{background:none;outline:2px dashed color-mix(in srgb,var(--ink) 38%,transparent);outline-offset:-2px}
+
+/* the wall: half-block columns, running bond by span */
+.wall{display:grid;gap:var(--joint);grid-template-columns:repeat(var(--halves,8),minmax(0,1fr));grid-auto-rows:minmax(var(--course),auto);grid-auto-flow:row dense}
+.wall > .w{grid-column:span 2}
+.wall > .h{grid-column:span 1}
+
+/* a person in a block */
+.who{display:flex;flex-direction:column;padding:13px 15px 14px;gap:1px;text-decoration:none}
+.who h3{font-size:19px;line-height:1.16;padding-inline-end:46px}
+.who h3 a{text-decoration:none}
+.who h3 a::after{content:"";position:absolute;inset:0}
+.who h3 a:focus-visible{outline:none}
+.who:has(a:focus-visible){outline:2px solid var(--line);outline-offset:3px}
+.who .trade{font-size:15px;line-height:1.35;color:var(--ink-2);margin-top:2px}
+.who .place{font:550 13px/1.3 var(--text);font-stretch:85%;color:var(--ink-2);margin-top:3px}
+.who .rate{margin-top:auto;padding-top:10px}
+.chalk{position:absolute;top:12px;right:13px;font:750 14px/1 var(--text);font-stretch:78%;color:var(--oxide);letter-spacing:.01em}
+.blk--night .chalk{color:var(--line)}
+.blk--night .trade,.blk--night .place,.blk--night .rate small{color:var(--night-ink-2)}
+.who.h h3{font-size:16.5px;padding-inline-end:0}
+.who.h .rate{font-size:34px}
+.who.h .trade{font-size:13.5px}
+
+/* ---------- the mason's line ---------- */
+.mline{position:relative;height:44px;margin-block:2px 4px}
+.mline::before,.mline::after{content:"";position:absolute;bottom:9px;width:5px;height:24px;background:var(--ink)}
+.mline::before{left:-9px}.mline::after{right:-9px}
+.mline svg{position:absolute;left:0;right:0;bottom:6px;width:100%;height:30px;overflow:visible}
+.mline .string{fill:none;stroke:var(--line);stroke-width:2;vector-effect:non-scaling-stroke}
+.mline .pin{fill:var(--ink)}
+.mline .tag{position:absolute;left:0;bottom:25px;font:650 13px/1 var(--text);font-stretch:85%;letter-spacing:.02em;color:var(--ink);background:var(--mortar);padding-inline-end:10px}
+.mline .tag b{color:var(--oxide);font-weight:750}
+
+/* starter bars: rebar left standing for the next floor */
+.rebar{display:flex;gap:0;height:30px;align-items:flex-end}
+.rebar i{width:2.5px;height:100%;background:var(--oxide);border-radius:1px;transform-origin:bottom}
+.rebar i:nth-child(3n+2){height:78%}
+.rebar i:nth-child(4n+1){transform:rotate(4deg)}
+
+/* spray marks: state is a mark, not a hue */
+.spray{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M2 11.5C40 8.6 70 12.8 104 10.1S165 8.2 198 10.8' fill='none' stroke='%23FF4F12' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M30 13.4C70 12 120 13.6 170 12.2' fill='none' stroke='%23FF4F12' stroke-opacity='.45' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:0 58%;background-size:100% .5em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.js-lay [data-spray] .spray{background-size:0% .5em;transition:background-size .75s cubic-bezier(.5,0,.2,1) .15s}
+.js-lay [data-spray].is-sprayed .spray{background-size:100% .5em}
+.x-mark{width:26px;height:26px;flex:none}
+.x-mark path{fill:none;stroke:var(--line);stroke-width:4.2;stroke-linecap:round}
+
+/* ---------- buttons, fields ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border:0;border-radius:0;background:var(--ink);color:var(--mortar);font:700 15.5px/1 var(--text);cursor:pointer;text-decoration:none;transition:background-color .2s var(--ease-out),transform .2s var(--ease-out)}
+.btn:hover{background:var(--line);color:#141618}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.field label{display:block;font:650 14px/1.3 var(--text);margin-bottom:6px}
+.field label span{font-weight:450;color:var(--ink-2)}
+.field input,.field textarea{width:100%;min-height:48px;padding:11px 13px;border:0;border-bottom:2px solid var(--ink);border-radius:0;background:var(--mortar-2);color:var(--ink);font:400 16px/1.4 var(--text);caret-color:var(--line);transition:border-color .2s}
+.field textarea{min-height:120px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--line);background:color-mix(in srgb,var(--mortar-2) 70%,var(--block))}
+.field input::placeholder,.field textarea::placeholder{color:var(--ink-2);opacity:.85}
+.field[data-state="error"] input,.field[data-state="error"] textarea{border-bottom-color:#B3261E}
+.field .err{display:none;font:550 13.5px/1.4 var(--text);color:#B3261E;margin-top:6px}
+.field[data-state="error"] .err{display:block}
+@media (prefers-color-scheme:dark){.field[data-state="error"] input,.field[data-state="error"] textarea{border-bottom-color:#FF8A80}.field .err{color:#FF8A80}}
+
+/* ---------- motion: content is visible by default; JS opts blocks into the lay ---------- */
+.js-lay .lay > *{opacity:0;transform:translateY(-14px)}
+.js-lay .lay.is-laid > *{opacity:1;transform:none;transition:opacity .35s var(--ease-out),transform .55s var(--ease-set);transition-delay:calc(var(--i,0) * 55ms)}
+@media (prefers-reduced-motion:reduce){
+  .js-lay .lay > *{opacity:1;transform:none}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
