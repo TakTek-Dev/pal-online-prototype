@@ -17,7 +17,8 @@ os.makedirs(os.path.join(ROOT, 'tools', 'out'), exist_ok=True)
 
 photos = {p['id']: p for p in json.load(open(os.path.join(ROOT, 'research', 'photos.json'), encoding='utf-8'))['photos']}
 edition = open(os.path.join(ROOT, 'research', 'edition.json'), encoding='utf-8').read()
-used = sorted(set(re.findall(r'"photo"\s*:\s*"([^"]+)"', edition)))
+pages = open(os.path.join(ROOT, 'tools', 'pages.py'), encoding='utf-8').read()
+used = sorted(set(re.findall(r'"photo"\s*:\s*"([^"]+)"', edition)) | set(re.findall(r"img\('([^']+)'", pages)))
 WIDTHS = (1800, 1200, 700)
 UA = {'User-Agent': 'TakTek-prototype/1.0 (Pal-Online archive photos, credited)'}
 

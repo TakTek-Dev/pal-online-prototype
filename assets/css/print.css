@@ -1,0 +1,14 @@
+/* Pal-Online print: the story, its person and its sources, without the chrome. Loaded with media="print". */
+:root{--mortar:#fff;--mortar-2:#fff}
+  body{background:#fff;color:#000;font-size:11pt}
+  .strip,.bar,.nav,.motto,.share,.skip,#loader,.mline svg,.rebar,.filters,.suggest,.sbox,.foot .course-top,.foot nav,.more,.tellform,.lay .bat{display:none!important}
+  .mast .wrap{padding-top:0}
+  .art,.phead-grid,.twocol,.pane,.split{display:block}
+  .aside{position:static;margin-top:18px}
+  .blk,.slab{background:#fff!important;outline:1px solid #999;break-inside:avoid}
+  .chain,.foot{background:#fff;color:#000}
+  .chain *,.foot *{color:#000!important}
+  .art .opening img{max-height:9cm;width:auto}
+  .body p{font-size:11pt;line-height:1.5}
+  .howknow a::after,.body a::after{content:" (" attr(href) ")";font-size:8pt;word-break:break-all}
+  .js-lay .lay > *{opacity:1!important;transform:none!important}

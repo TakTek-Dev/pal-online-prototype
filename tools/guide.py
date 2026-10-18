@@ -69,25 +69,22 @@ def plate_bars():
 
 
 def plate_marks():
-    return ('<svg viewBox="0 0 500 320" aria-hidden="true">'
-            '<g fill="none" stroke="#FF4F12" stroke-width="9" stroke-linecap="round">'
-            '<path d="M60 70C92 104 121 136 154 166M152 66C121 97 94 132 64 170"/>'
-            '<path d="M214 124c14 13 24 26 34 41c20-39 39-70 64-99"/>'
-            '<path d="M352 132C384 128 412 136 452 126"/></g>'
-            '<text x="356" y="124" font-family="Mona Sans" font-weight="650" font-size="30" fill="#464B4F">Tailor</text>'
-            '<text x="64" y="252" font-family="Mona Sans" font-weight="750" font-stretch="78%" font-size="44" fill="#983812">12 h</text>'
-            '<text x="214" y="252" font-family="Mona Sans" font-weight="750" font-stretch="78%" font-size="44" fill="#983812">×9</text>'
-            '<text x="352" y="252" font-family="Mona Sans" font-weight="750" font-stretch="78%" font-size="44" fill="#983812">500 m</text>'
-            '</svg>')
+    return ('<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:center;width:84%">'
+            '<img src="assets/img/spray-cross.webp?v=1" alt="" width="200" height="200">'
+            '<img src="assets/img/spray-tick.webp?v=1" alt="" width="200" height="200">'
+            '<img src="assets/img/spray-slash.webp?v=1" alt="" width="200" height="200">'
+            '<p style="font:750 34px/1 var(--text);font-stretch:78%;color:var(--oxide);margin:0">12 h</p>'
+            '<p style="font:750 34px/1 var(--text);font-stretch:78%;color:var(--oxide);margin:0">×9</p>'
+            '<p style="font:750 34px/1 var(--text);font-stretch:78%;color:var(--oxide);margin:0">500 m</p></div>')
 
 
 CH = [('idea', 'The idea'), ('wordmark', 'Wordmark'), ('mark', 'Mark'), ('colour', 'Colour'), ('type', 'Type'),
       ('wall', 'The wall'), ('block', 'The block'), ('marks', 'Marks'), ('motion', 'Motion'), ('social', 'Social'),
-      ('voice', 'Voice'), ('downloads', 'Downloads')]
+      ('voice', 'Voice'), ('pages', 'Pages'), ('downloads', 'Downloads')]
 
 
 def ch_head(i, cid, title, intro):
-    return (f'<div class="ch-head"><div><p class="no">{i:02d}</p><h2 id="{cid}-h">{e(title)}</h2></div>'
+    return (f'<div class="ch-head"><div><h2 id="{cid}-h">{e(title)}</h2></div>'
             f'<p>{rich(intro)}</p></div>')
 
 
@@ -100,7 +97,7 @@ C0 = ED['course'][0]
 
 top = (f'<header class="g-top"><div class="wrap"><a class="home" href="index.html" aria-label="Pal-Online identity guide">{wordmark()}</a>'
        f'<nav aria-label="Chapters">{"".join(f"<a href={chr(34)}#{c}{chr(34)}>{t}</a>" for c, t in CH[:9])}</nav>'
-       f'<a class="go" href="home.html">Homepage</a></div></header>')
+       f'<button class="theme" type="button" role="switch" aria-checked="false" aria-label="Night colours"><span class="sw" aria-hidden="true"></span><span class="lab" aria-hidden="true">Night</span></button><a class="go" href="home.html">Homepage</a></div></header>')
 
 toc = ''.join(f'<li><a href="#{c}"><span>{i + 1:02d}</span>{t}</a></li>' for i, (c, t) in enumerate(CH))
 cover = (f'<section class="cover wrap" aria-labelledby="cover-h"><h1 class="sr" id="cover-h">Pal-Online identity guide</h1>'
@@ -146,12 +143,12 @@ for cap_txt, style, extra in [
         art = '<p style="font:800 34px/1 Georgia,serif;margin:0">Pal-Online</p>'
     elif extra == 'two':
         two = 'M0 0h1200v600H0zM150 130h330v340H150zM720 130h330v340H720z'
-        art = (f'<svg class="w" viewBox="{" ".join(str(v) for v in draw_vb)}"><path d="{BRAND["pal"]}"/>'
-               f'<path fill-rule="evenodd" transform="translate({bx} {by})" d="{two}"/><path d="{BRAND["online"]}"/></svg>')
+        art = (f'<svg class="w" viewBox="{" ".join(str(v) for v in draw_vb)}"><path fill="currentColor" d="{BRAND["pal"]}"/>'
+               f'<path fill="currentColor" fill-rule="evenodd" transform="translate({bx} {by})" d="{two}"/><path fill="currentColor" d="{BRAND["online"]}"/></svg>')
     elif extra == 'bars':
         bars = ''.join(f'<path d="M{bx + 260 + i * 340} {by}v-700" stroke="#983812" stroke-width="70" fill="none"/>' for i in range(3))
         art = (f'<svg class="w" viewBox="{draw_vb[0]} -800 {draw_vb[2]} {cap + 800}">{bars}<path d="M{draw_vb[0]} {by - 400}h{draw_vb[2]}" stroke="#FF4F12" stroke-width="40"/>'
-               f'<path d="{BRAND["pal"]}"/><path fill-rule="evenodd" d="{BRAND["block"]}"/><path d="{BRAND["online"]}"/></svg>')
+               f'<path fill="currentColor" d="{BRAND["pal"]}"/><path fill="currentColor" fill-rule="evenodd" d="{BRAND["block"]}"/><path fill="currentColor" d="{BRAND["online"]}"/></svg>')
     elif extra == 'photo':
         art = (f'<div style="position:absolute;inset:0;background:repeating-linear-gradient(115deg,#7A6B5A 0 18px,#B9A58C 18px 30px,#4E5A63 30px 52px)"></div>'
                f'<svg class="w" style="position:relative;color:#F3F4F1" viewBox="{" ".join(str(v) for v in draw_vb)}"><path fill="currentColor" d="{BRAND["pal"]}"/><path fill="currentColor" fill-rule="evenodd" d="{BRAND["block"]}"/><path fill="currentColor" d="{BRAND["online"]}"/></svg>')
@@ -176,24 +173,24 @@ mark_s = section(3, 'mark', 'Mark',
                  f'<p class="cap" style="max-width:70ch"><b>Proportion.</b> The block is 62% of the square, sitting just below the centre; the line runs edge to edge 8.5% above it, so in a round avatar crop the block stays whole and the line reads as a horizon.</p>')
 
 sw = [('s-mortar w', 'Mortar', '#F3F4F1', 'The page. Lime mortar, cool. Never cream.'),
-      ('blk s-block w', 'Block', '#D6D8D3', 'Every block face, multiplied with the cast-concrete tile.'),
+      ('blk s-block w', 'Block', '#D9DBD6', 'Every block face, multiplied with the cast-concrete tile.'),
       ('s-ink w', 'Charcoal', '#141618', 'The one structural ink: type, rules, the foundation.'),
       ('s-line w', 'Line', '#FF4F12', 'The mason\'s line. Today, focus, the live mark. Never body text.'),
       ('s-oxide w', 'Oxide', '#983812', 'Rebar. The text-safe shade of the line: chalk numbers, links on mortar.'),
       ('blk s-night w', 'Night block', '#272B2E', 'Dark courses: the chain, the foundation, night mode.')]
 swatches = ''.join(f'<div class="sw {c}"><h3>{n}</h3><div><p class="hex">{h}</p><p>{d}</p></div></div>' for c, n, h, d in sw)
 pairs = [('#141618', '#F3F4F1', 'Charcoal on mortar', '17.3:1', 'All text'),
-         ('#141618', '#D6D8D3', 'Charcoal on block', '13.0:1', 'All text'),
-         ('#464B4F', '#D6D8D3', 'Secondary on block', '5.6:1', 'Trades, places, units'),
+         ('#141618', '#D9DBD6', 'Charcoal on block', '13.4:1', 'All text'),
+         ('#464B4F', '#D9DBD6', 'Secondary on block', '5.8:1', 'Trades, places, units'),
          ('#983812', '#F3F4F1', 'Oxide on mortar', '6.6:1', 'Links, chalk numbers'),
-         ('#983812', '#D6D8D3', 'Oxide on block', '5.0:1', 'Chalk numbers'),
+         ('#983812', '#D9DBD6', 'Oxide on block', '5.1:1', 'Chalk numbers'),
          ('#141618', '#FF4F12', 'Charcoal on line', '6.0:1', 'Text on line fields'),
          ('#FF4F12', '#F3F4F1', 'Line on mortar', '3.0:1', 'Marks and rules only, never text')]
 rows = ''.join(f'<tr><td><span class="chip" style="background:{a}"></span><span class="chip" style="background:{b}"></span>{n}</td><td class="n">{r}</td><td>{u}</td></tr>' for a, b, n, r, u in pairs)
 colour_s = section(4, 'colour', 'Colour',
                    'One ink, one line. The wall is printed in charcoal on concrete and mortar; the orange of the mason\'s line is the only live colour, and photographs carry everything else. Nothing on the page is coloured for decoration.',
                    f'<div class="wall swatches">{swatches}</div>'
-                   f'<div class="ratio" aria-label="Rough share of each colour on a page"><span style="flex:52;background:#F3F4F1;outline:1px solid #14161826">Mortar 52%</span><span style="flex:24;background:#D6D8D3">Block 24%</span><span style="flex:16;background:#141618;color:#F3F4F1">Charcoal 16%</span><span style="flex:5;background:#983812;color:#F3F4F1">5</span><span style="flex:3;background:#FF4F12"></span></div>'
+                   f'<div class="ratio" aria-label="Rough share of each colour on a page"><span style="flex:52;background:#F3F4F1;outline:1px solid #14161826">Mortar 52%</span><span style="flex:24;background:#D9DBD6">Block 24%</span><span style="flex:16;background:#141618;color:#F3F4F1">Charcoal 16%</span><span style="flex:5;background:#983812;color:#F3F4F1">5</span><span style="flex:3;background:#FF4F12"></span></div>'
                    f'<table class="pairs"><thead><tr><th>Pair</th><th>Contrast</th><th>Use</th></tr></thead><tbody>{rows}</tbody></table>'
                    f'<p class="cap">Night mode swaps the grounds (mortar #101213, block #2A2E31) and lifts oxide to #FF8A5C; the line stays the same orange.</p>')
 
@@ -259,13 +256,13 @@ motion_s = section(9, 'motion', 'Motion',
                    f'<div class="motion">'
                    f'<div class="mo"><h3>Snap</h3><div class="stage"><div class="mline" id="line-snap" style="height:60px"><svg viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path class="string" d="M0 30L1000 30"/></svg></div></div><p class="spec-t">The line is stretched once, in the loader: slack, then taut on a damped spring, <code>6.2 Hz</code>, <code>τ 110 ms</code>.</p><button class="btn" type="button" data-demo="snap">Snap the line</button></div>'
                    f'<div class="mo"><h3>Lay</h3><div class="stage">{lay_demo}</div><p class="spec-t">Blocks are set course by course as a wall arrives: down 14 px and tapped level, <code>550 ms</code>, <code>cubic-bezier(.2,.9,.25,1.25)</code>, 55 ms apart.</p><button class="btn" type="button" data-demo="lay">Lay the course</button></div>'
-                   f'<div class="mo"><h3>Pluck</h3><div class="stage">{line("line-mo", "Point at a block")}{pluck_demo}</div><p class="spec-t">The signature. Pointing at or tabbing to a person plucks the line above their course: <code>8.5 Hz</code>, <code>τ 170 ms</code>, 7 px.</p></div>'
-                   f'<div class="mo"><h3>Spray</h3><div class="stage"><p class="reg-demo"><span class="spray">Nursing graduate</span> → sells internet cards</p></div><p class="spec-t">A struck trade is sprayed once, left to right, <code>600 ms</code>, when its row comes into view.</p><button class="btn" type="button" data-demo="spray">Spray it</button></div>'
-                   f'</div><p class="cap" style="margin-top:18px"><b>Loader.</b> Once per session: the pins land, the line snaps, the block is lowered to it and tapped twice, the name opens out from behind it, and the page is lifted. Any key or click skips it. <button class="btn" type="button" data-demo="loader" style="min-height:40px;margin-left:10px">Replay the loader</button></p>')
+                   f'<div class="mo"><h3>Pluck</h3><div class="stage">{line("line-mo", "Point at a block")}{pluck_demo}</div><p class="spec-t">The signature. Pointing at or tabbing to a person plucks the line above their course: <code>7 Hz</code>, <code>τ 260 ms</code>, 10 px.</p></div>'
+                   f'<div class="mo"><h3>Spray</h3><div class="stage"><p class="reg-demo"><span class="spray">Nursing graduate</span> → sells internet cards</p></div><p class="spec-t">A struck trade is sprayed once, left to right, <code>750 ms</code>, when its row comes into view.</p><button class="btn" type="button" data-demo="spray">Spray it</button></div>'
+                   f'</div><p class="cap" style="margin-top:18px"><b>Loader.</b> Once per session: the pins land, the line snaps, the block is lowered to it and tapped twice, the name opens out from behind it, and the page is lifted. Any key or click skips it. <button class="btn" type="button" data-demo="loader" style="min-height:40px">Replay the loader</button></p>')
 
 pc = ED['social']
 hund = ''.join(f'<i{" class=o" if i < pc["number"]["out"] else ""}></i>' for i in range(100))
-closed_svg = '<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M2 4C30 14 62 27 98 36M96 3C66 13 34 26 3 37"/></svg>'
+closed_svg = '<i class="sp sp-x" aria-hidden="true"></i>'
 posts = (f'<figure><div class="frame"><div class="post p-worker"><span class="post-line" style="top:9cqw"></span><div class="blkp"><p class="nm">{e(pc["worker"]["name"])}</p><p class="tr">{e(pc["worker"]["trade"])}</p><p class="rt">{e(pc["worker"]["rate"])}<small>{e(pc["worker"]["unit"])}</small></p><p class="qt">“{e(pc["worker"]["quote"])}”</p></div><p class="sr2">{e(pc["worker"]["src"])}</p><div class="wm">{wordmark()}</div></div></div><figcaption><b>Worker.</b> The default post: one person, one block. <a href="assets/brand/social/post-worker.png">PNG 1080 × 1350</a></figcaption></figure>'
          f'<figure><div class="frame"><div class="post p-number"><p class="fig">{e(pc["number"]["value"])}</p><p class="what">{e(pc["number"]["what"])}</p><div class="hund">{hund}</div><p class="sr2">{e(pc["number"]["src"])}</p><div class="wm" style="color:#ECEEEA;--block-fill:#FF4F12">{wordmark()}</div></div></div><figcaption><b>Number.</b> A count, with who counted. <a href="assets/brand/social/post-number.png">PNG</a></figcaption></figure>'
          f'<figure><div class="frame"><div class="post p-quote"><p class="q">{e(pc["quote"]["text"])}</p><p class="by">{e(pc["quote"]["by"])}</p><div class="wm">{wordmark()}</div></div></div><figcaption><b>Quote.</b> Words as published. <a href="assets/brand/social/post-quote.png">PNG</a></figcaption></figure>'
@@ -273,7 +270,7 @@ posts = (f'<figure><div class="frame"><div class="post p-worker"><span class="po
 social_s = section(10, 'social', 'Social',
                    'Most readers meet Pal-Online in a feed, so every story must survive as one card. Four templates cover the edition; each carries its source on the card itself, because a screenshot travels without its link.',
                    f'<div class="social">{posts}</div>'
-                   f'<div class="avatars"><img src="assets/brand/social/avatar-night.png?v={V}" alt="Round avatar, night" width="120" height="120"><img src="assets/brand/social/avatar-mortar.png?v={V}" alt="Round avatar, mortar" width="120" height="120"><img class="sq" src="assets/brand/social/avatar-night.png?v={V}" alt="Square avatar, night" width="120" height="120"><p class="cap">Avatars, 1080 px: night for X and Instagram, mortar for Telegram and WhatsApp.</p></div>')
+                   f'<div class="avatars"><img src="assets/brand/social/avatar-night-240.png?v={V}" alt="Round avatar, night" width="120" height="120"><img src="assets/brand/social/avatar-mortar-240.png?v={V}" alt="Round avatar, mortar" width="120" height="120"><img class="sq" src="assets/brand/social/avatar-night-240.png?v={V}" alt="Square avatar, night" width="120" height="120"><p class="cap">Avatars, 1080 px: night for X and Instagram, mortar for Telegram and WhatsApp.</p></div>')
 
 voice_s = section(11, 'voice', 'Voice',
                   'Plain, exact, unhurried. The reader should finish every story knowing a name, a trade and a number, and where the number came from.',
@@ -288,7 +285,25 @@ dls = [('assets/brand/pal-online-identity.zip', 'Identity kit (zip)', 'Logos in 
        ('assets/brand/logo-night-line.svg', 'Wordmark, night (SVG)', 'On charcoal; block in the line colour'),
        ('assets/brand/mark.svg', 'Mark (SVG)', 'The block under the line'),
        ('assets/fonts/OFL.txt', 'Font licences', 'Hepta Slab and Mona Sans, SIL Open Font License 1.1')]
-dl_s = section(12, 'downloads', 'Downloads',
+PAGES = [('home.html', 'Today', 'The homepage: today’s course on top, the chain, changed trades, the count, workplaces, money and moving.'),
+         ('article.html', 'A story', 'One person’s block beside the text, how we know, the chain inline, share and correct.'),
+         ('wall.html', 'The wall', 'Everyone on the site, filtered by place and kind of work; the bond re-lays itself.'),
+         ('money.html', 'Money', 'A payslip first, then the changer, salaries as what is paid and what is short, cash and prices on the slab.'),
+         ('moving.html', 'Moving', 'The board: each crossing, gate and closed field with its mark, date and source.'),
+         ('count.html', 'The count', 'Every unemployment figure on one wall of a hundred people, and other counts on the slab.'),
+         ('harvest.html', 'A topic', 'The olive harvest, split Gaza and West Bank, people first, then the figures.'),
+         ('khan-younis.html', 'A place', 'Khan Younis: its people, its figures, every report from there; the template for any town, camp or tag.'),
+         ('tell.html', 'Tell us your work', 'Four steps to a block, and the form with every state.'),
+         ('about.html', 'About', 'What the site is, six reporting rules, corrections, contact.'),
+         ('privacy.html', 'Privacy', 'What the form collects, who sees it, what the browser keeps.'),
+         ('search.html', 'Search', 'Every checked item, matched word by word, filtered by desk.'),
+         ('404.html', 'Not found', 'A wall with one block missing.')]
+pages_wall = ''.join(f'<a class="blk w" href="{h}" style="display:flex;flex-direction:column;gap:6px;padding:14px 16px;text-decoration:none;min-height:150px"><h3 style="margin:0">{e(t)}</h3><p style="font-size:14.5px;line-height:1.45;color:var(--ink-2)">{e(d)}</p><p class="src" style="margin-top:auto">{h}</p></a>' for h, t, d in PAGES)
+pages_s = section(12, 'pages', 'Pages',
+                  'Thirteen templates, all built from the same block, line and marks. Each page lists its own sources at the foot.',
+                  f'<div class="wall" style="--halves:8">{pages_wall}</div>')
+
+dl_s = section(13, 'downloads', 'Downloads',
                'Everything the newsroom and its designers need to set the brand in place. The fonts are free under the SIL Open Font License; the drawn shekel ships inside the site\'s Hepta Slab files.',
                '<ul class="dl">' + ''.join(f'<li><a href="{h}?v={V}" download>{t}</a><span>{d}</span></li>' for h, t, d in dls) + '</ul>')
 
@@ -302,6 +317,7 @@ page = f'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{EARLY}
 <meta name="robots" content="noindex, nofollow">
 <title>Pal-Online — identity guide</title>
 <meta name="description" content="The Pal-Online identity: the Midmak system of block, line, bars and marks.">
@@ -333,6 +349,7 @@ page = f'''<!doctype html>
 {motion_s}
 {social_s}
 {voice_s}
+{pages_s}
 {dl_s}
 </main>
 {foot}
