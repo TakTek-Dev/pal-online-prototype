@@ -5,8 +5,8 @@ python -I tools/fonts.py   (from the project root)
 Hepta Slab carries the display voice (the block serif) and Mona Sans carries text,
 labels and figures. Hepta Slab ships without a shekel sign, so this script draws one
 for each weight we use, built like the face's own '$': no serifs, square joints,
-verticals a little lighter than the H stem. Mona Sans keeps its variable axes
-(width 75-125, weight 200-900); Hepta Slab ships as two static weights.
+verticals at the weight of the figures. Mona Sans stays variable but trimmed to what
+ships (width 75-100, weight 400-900; italic 400-600); Hepta Slab ships as two static weights.
 Sources: research/fontlab/src (Google Fonts repository, OFL).
 """
 import io

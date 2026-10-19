@@ -8,6 +8,44 @@
     set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* private mode: fine */ } }
   };
 
+  /* ---------- day and night: the device decides until the reader picks; picking the device's own
+     scheme again hands the choice back to the device ---------- */
+  const dark = matchMedia('(prefers-color-scheme: dark)');
+  const scheme = () => root.getAttribute('data-theme') || (dark.matches ? 'dark' : 'light');
+  const paintMeta = () => {
+    const bg = getComputedStyle(root).getPropertyValue('--mortar').trim() || '#F3F4F1';
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', bg));
+  };
+  const syncSwitches = () => document.querySelectorAll('.theme').forEach((b) => {
+    const night = scheme() === 'dark';
+    b.setAttribute('aria-checked', String(night));
+    b.title = night ? 'Switch to day' : 'Switch to night';
+  });
+  const setScheme = (next) => {
+    const device = dark.matches ? 'dark' : 'light';
+    if (next === device) { root.removeAttribute('data-theme'); try { localStorage.removeItem('po-theme'); } catch (e) { /* ignore */ } }
+    else { root.setAttribute('data-theme', next); try { localStorage.setItem('po-theme', next); } catch (e) { /* ignore */ } }
+    syncSwitches();
+    paintMeta();
+  };
+  let want = null, running = null;          // a second click mid-transition flips from where the first was going
+  document.querySelectorAll('.theme').forEach((b) => b.addEventListener('click', () => {
+    const next = (want || scheme()) === 'dark' ? 'light' : 'dark';
+    want = next;
+    if (running) running.skipTransition();
+    if (!document.startViewTransition || still || document.hidden) { setScheme(next); want = null; return; }
+    const r = b.getBoundingClientRect();
+    const x = r.left + r.width / 2, y = r.top + r.height / 2;
+    root.style.setProperty('--vx', `${x}px`);
+    root.style.setProperty('--vy', `${y}px`);
+    root.style.setProperty('--vr', `${Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))}px`);
+    running = document.startViewTransition(() => setScheme(next));
+    running.finished.finally(() => { running = null; want = null; });
+  }));
+  dark.addEventListener('change', () => { syncSwitches(); paintMeta(); });
+  syncSwitches();
+  paintMeta();
+
   /* ---------- the line: a taut string drawn as one path, plucked by hand ---------- */
   const lines = [];
   function makeLine(el) {
@@ -16,7 +54,7 @@
     const line = { el, svg, path, w: 1000, y: 15, raf: 0, start: 0, xp: .5, amp: 0 };
     const rest = () => path.setAttribute('d', `M0 ${line.y}L${line.w} ${line.y}`);
     line.rest = rest;
-    line.pluck = (xFrac, amp = 7) => {
+    line.pluck = (xFrac, amp = 10) => {
       if (still) return;
       const now = performance.now();
       if (line.raf && now - line.start < 140) return;      // one finger at a time
@@ -26,10 +64,10 @@
       cancelAnimationFrame(line.raf);
       const tick = (t) => {
         const k = (t - line.start) / 1000;
-        const d = line.amp * Math.exp(-k / .17) * Math.cos(k * 2 * Math.PI * 8.5);
+        const d = line.amp * Math.exp(-k / .26) * Math.cos(k * 2 * Math.PI * 7);
         const x = line.xp * line.w;
         path.setAttribute('d', `M0 ${line.y}L${x.toFixed(1)} ${(line.y + d).toFixed(2)}L${line.w} ${line.y}`);
-        if (k < .9) line.raf = requestAnimationFrame(tick); else { line.raf = 0; rest(); }
+        if (k < 1.2) line.raf = requestAnimationFrame(tick); else { line.raf = 0; rest(); }
       };
       line.raf = requestAnimationFrame(tick);
     };
@@ -91,7 +129,7 @@
   const loader = document.getElementById('loader');
   if (loader) {
     const seen = store.get('po-laid');
-    if (still || seen) {
+    if (still || seen || document.hidden) {
       loader.remove();
     } else {
       root.classList.add('is-loading');
@@ -106,21 +144,22 @@
           if (w.getBoundingClientRect().top < innerHeight) w.classList.add('is-laid');
         });
         const first = document.querySelector('.mline');
-        setTimeout(() => first && first.__line && first.__line.pluck(.5, 9), 260);
-        setTimeout(() => loader.remove(), 900);
+        setTimeout(() => first && first.__line && first.__line.pluck(.5, 9), 220);
+        setTimeout(() => loader.remove(), 700);
       };
       // the string snaps from slack to taut: a damped spring on the sag
       const t0 = performance.now();
       const snap = (t) => {
         const k = (t - t0) / 1000;
-        if (k < .18) { string.setAttribute('d', 'M0 60Q500 60 1000 60'); requestAnimationFrame(snap); return; }
-        const s = k - .18;
+        if (k < .12) { string.setAttribute('d', 'M0 60Q500 106 1000 60'); requestAnimationFrame(snap); return; }
+        const s = k - .12;
         const sag = 46 * Math.exp(-s / .11) * Math.cos(s * 2 * Math.PI * 6.2);
         string.setAttribute('d', `M0 60Q500 ${(60 + sag).toFixed(2)} 1000 60`);
         if (s < .8) requestAnimationFrame(snap);
       };
       requestAnimationFrame(snap);
-      const timer = setTimeout(finish, 2050);
+      const timer = setTimeout(finish, 1500);
+      setTimeout(() => loader.isConnected && loader.remove(), 5000);   // a guard: the page is never held behind the loader
       const skip = () => { clearTimeout(timer); finish(); };
       loader.addEventListener('click', skip);
       addEventListener('keydown', skip, { once: true });

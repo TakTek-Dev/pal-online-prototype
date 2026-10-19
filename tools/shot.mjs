@@ -36,7 +36,7 @@ try {
   await send('Runtime.evaluate', { expression: 'document.fonts.ready.then(()=>1)', awaitPromise: true });
   // a full-page capture cannot scroll: lay every wall, spray every row, load every photo
   await send('Runtime.evaluate', { expression: "document.querySelectorAll('.lay').forEach(w=>w.classList.add('is-laid'));document.querySelectorAll('[data-spray]').forEach(w=>w.classList.add('is-sprayed'));document.querySelectorAll('img[loading=lazy]').forEach(i=>i.loading='eager');1" });
-  await sleep(1200);
+  await sleep(2400);
   await sleep(300);
   let clip;
   if (mode === 'full') {
@@ -44,8 +44,18 @@ try {
     const [sw, sh] = JSON.parse(r.result.value);
     clip = { x: 0, y: 0, width: sw, height: Math.min(sh, 32000), scale: 1 };
   }
-  const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: mode === 'full', ...(clip ? { clip } : {}) });
-  writeFileSync(out, Buffer.from(shot.data, 'base64'));
+  if (mode === 'segments') {
+    // long pages: 4000 px slices, each under the GPU texture limit that makes one huge capture repeat itself
+    const r = await send('Runtime.evaluate', { expression: 'document.documentElement.scrollHeight', returnByValue: true });
+    const H = r.result.value;
+    for (let y = 0, k = 1; y < H; y += 4000, k++) {
+      const seg = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y, width: +w, height: Math.min(4000, H - y), scale: 1 } });
+      writeFileSync(out.replace(/\.png$/, `-${k}.png`), Buffer.from(seg.data, 'base64'));
+    }
+  } else {
+    const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: mode === 'full', ...(clip ? { clip } : {}) });
+    writeFileSync(out, Buffer.from(shot.data, 'base64'));
+  }
   const ov = await send('Runtime.evaluate', { expression: 'JSON.stringify({sw:document.documentElement.scrollWidth,cw:document.documentElement.clientWidth,h:document.documentElement.scrollHeight})', returnByValue: true });
   console.log(out, ov.result.value);
 } finally {

@@ -1,0 +1,14 @@
+{
+  "name": "Pal-Online",
+  "short_name": "Pal-Online",
+  "description": "Who is working in Palestine today, at what, and for how much.",
+  "start_url": "home.html",
+  "display": "standalone",
+  "background_color": "#F3F4F1",
+  "theme_color": "#141618",
+  "icons": [
+    { "src": "assets/brand/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "assets/brand/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/brand/social/avatar-night.png", "sizes": "1080x1080", "type": "image/png" }
+  ]
+}

@@ -58,6 +58,17 @@ try {
     await evalv(`(()=>{const s=document.querySelector('svg');s.setAttribute('width','1080');s.setAttribute('height','1080');document.documentElement.style.margin='0';return 1})()`);
     await shoot({ x: 0, y: 0, width: 1080, height: 1080 }, file);
   }
+
+  // the share image every page points og:image at, and the home-screen icon
+  await open(`${base}tools/og.html`, 1200, 630);
+  const og = await send('Page.captureScreenshot', { format: 'png', clip: { x: 0, y: 0, width: 1200, height: 630, scale: 1 } });
+  writeFileSync('assets/og.png', Buffer.from(og.data, 'base64'));
+  console.log('assets/og.png');
+  await open(`${base}assets/brand/mark-night.svg`, 180, 180);
+  await evalv(`(()=>{const s=document.querySelector('svg');s.setAttribute('width','180');s.setAttribute('height','180');return 1})()`);
+  const ic = await send('Page.captureScreenshot', { format: 'png', clip: { x: 0, y: 0, width: 180, height: 180, scale: 1 } });
+  writeFileSync('assets/brand/apple-touch-icon.png', Buffer.from(ic.data, 'base64'));
+  console.log('assets/brand/apple-touch-icon.png');
 } finally {
   try { ws && ws.close(); } catch {}
   proc.kill();
